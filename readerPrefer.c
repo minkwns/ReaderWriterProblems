@@ -19,10 +19,10 @@ int read_count = 0;
 void *reader(void *arg)
 {
     while (1) {
-        sem_wait(&mutex);
+        sem_wait(&mutex); // semaphore for counting # of readers
         read_count++;
         
-        if(read_count == 1)
+        if(read_count == 1) // If there is a reader, then writer can not enter critical section
             sem_wait(&rw_mutex);
         sem_post(&mutex);
         /*
@@ -37,7 +37,7 @@ void *reader(void *arg)
         sem_wait(&mutex);
         read_count--;
         if(read_count == 0)
-            sem_post(&rw_mutex);
+            sem_post(&rw_mutex); // reader is 0, then writer can enter critical section
         sem_post(&mutex);
         
     }
@@ -46,14 +46,9 @@ void *reader(void *arg)
 
 void *writer(void *arg)
 {
-    int id, i;
-    struct timespec req, rem;
-    id = *(int *)arg;
-    req.tv_sec = 0;
-    req.tv_nsec = 100000000L;
     
     while (1) {
-        sem_wait(&rw_mutex);
+        sem_wait(&rw_mutex); // waiting signal what is reader is 0
         /*
          * Begin Critical Section
          */
@@ -74,7 +69,11 @@ int main(void){
     
     int rarg[RNUM], warg[WNUM];
     
-    sem_init(&rw_mutex, 0, 1);
-    sem_init(&mutex, 0, 1);
+    sem_init(&rw_mutex, 0, 1); // semaphore initialize
+    sem_init(&mutex, 0, 1); // semaphore initialize
     
+    pthread_t rthid[RNUM]; // pthread for reader. If there are a lot of reader, then there is a possibility that the writer will not get the opportunity.
+    pthread_t wthid[WNUM];
+    
+    /* YOUR CODE */
 }
