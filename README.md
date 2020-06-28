@@ -1,4 +1,4 @@
-## reader writer problem
+## Reader Writer problems
 ### 1. reader-writer  문제란 무엇인가
 
 ##### &nbsp; 고전적인 프로세스 동기화 문제 중 하나이다. reader와 writer는 자원을 공유하지만, reader가 자원을 읽기만 할 수 있지만 writer는 자원을 갱신할 수도 있기 때문에 여러 reader가 critical section(임계 구역)에 들어갈 수 있는 반면 writer는 한번에 한 writer만 임계구역에 도달해야 한다. 
